@@ -1,0 +1,25 @@
+{
+  "name": "My Schedule",
+  "short_name": "课程表",
+  "description": "我的大学课程管理助手",
+
+  "start_url": "./index.html",
+
+  "display": "standalone",
+
+  "orientation": "portrait",
+
+  "background_color": "#f5f5f7",
+
+  "theme_color": "#0071e3",
+
+  "lang": "zh-CN",
+
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

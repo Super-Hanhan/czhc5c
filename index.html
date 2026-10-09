@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>My Schedule</title>
+
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#f5f5f7">
+
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+:root{
+
+    --main:#0071e3;
+    --text:#1d1d1f;
+    --gray:#86868b;
+    --card:rgba(255,255,255,.72);
+
+}
+
+
+
+body{
+
+    min-height:100vh;
+
+    padding-bottom:
+    env(safe-area-inset-bottom);
+
+    font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+
+    color:var(--text);
+
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #f5f5f7,
+        #ffffff
+    );
+
+
+    overflow-x:hidden;
+
+}
+
+
+
+/* 动态光晕背景 */
+
+body::before{
+
+
+    content:"";
+
+
+    position:fixed;
+
+
+    width:420px;
+
+    height:420px;
+
+
+    top:-180px;
+
+    left:-120px;
+
+
+
+    background:
+
+    radial-gradient(
+        circle,
+        rgba(0,113,227,.18),
+        transparent 70%
+    );
+
+
+
+    animation:
+
+    moveOne 12s infinite alternate;
+
+
+
+    z-index:-1;
+
+
+}
+
+
+
+body::after{
+
+
+    content:"";
+
+
+    position:fixed;
+
+
+    width:380px;
+
+    height:380px;
+
+
+
+    right:-150px;
+
+    bottom:-120px;
+
+
+
+    background:
+
+    radial-gradient(
+        circle,
+        rgba(175,82,222,.15),
+        transparent 70%
+    );
+
+
+
+    animation:
+
+    moveTwo 15s infinite alternate;
+
+
+
+    z-index:-1;
+
+}
+
+
+
+@keyframes moveOne{
+
+
+from{
+
+transform:translate(0,0);
+
+}
+
+
+to{
+
+transform:translate(80px,120px);
+
+}
+
+
+}
+
+
+
+@keyframes moveTwo{
+
+
+from{
+
+transform:translate(0,0);
+
+}
+
+
+to{
+
+transform:translate(-100px,-80px);
+
+}
+
+
+}
+
+
+
+
+
+
+
+.container{
+
+
+    width:100%;
+
+
+    max-width:600px;
+
+
+    margin:auto;
+
+
+    padding:
+
+    35px 20px 60px;
+
+
+
+}
+
+
+
+
+
+
+
+/* 顶部 */
+
+
+.header{
+
+
+    animation:
+
+    fade .8s ease;
+
+
+}
+
+
+
+.class-name{
+
+
+    font-size:15px;
+
+    color:var(--gray);
+
+
+}
+
+
+
+.header h1{
+
+
+    margin-top:8px;
+
+
+    font-size:42px;
+
+
+    letter-spacing:-2px;
+
+
+}
+
+
+
+.header p{
+
+
+    margin-top:10px;
+
+
+    color:var(--gray);
+
+
+}
+
+
+
+
+
+@keyframes fade{
+
+
+from{
+
+opacity:0;
+
+transform:translateY(25px);
+
+}
+
+
+to{
+
+opacity:1;
+
+}
+
+
+}
+
+
+
+
+
+
+/* 信息卡 */
+
+
+.info-card{
+
+
+    margin-top:28px;
+
+
+    padding:25px;
+
+
+
+    background:
+
+    var(--card);
+
+
+
+    backdrop-filter:
+
+    blur(20px);
+
+
+
+    border-radius:30px;
+
+
+
+    box-shadow:
+
+    0 15px 40px
+    rgba(0,0,0,.08);
+
+
+
+}
+
+
+
+
+.info-title{
+
+
+    color:var(--gray);
+
+
+    font-size:14px;
+
+
+}
+
+
+
+.next-course{
+
+
+    margin-top:12px;
+
+
+    font-size:24px;
+
+
+    font-weight:700;
+
+
+}
+
+
+
+.next-detail{
+
+
+    margin-top:8px;
+
+
+    color:#666;
+
+
+}
+
+
+
+
+
+
+/* 星期按钮 */
+
+
+.week-box{
+
+
+    display:flex;
+
+
+    gap:10px;
+
+
+    overflow-x:auto;
+
+
+    margin-top:25px;
+
+
+}
+
+
+
+.week-box::-webkit-scrollbar{
+
+display:none;
+
+}
+
+
+
+.day-btn{
+
+
+    flex-shrink:0;
+
+
+    width:70px;
+
+
+    height:45px;
+
+
+    border:none;
+
+
+    border-radius:20px;
+
+
+    background:
+
+    rgba(255,255,255,.8);
+
+
+
+    color:#555;
+
+
+
+    font-size:15px;
+
+
+    transition:.35s;
+
+
+
+}
+
+
+
+.day-btn.active{
+
+
+    background:
+
+    var(--main);
+
+
+    color:white;
+
+
+    transform:
+
+    translateY(-4px);
+
+
+}
+.course-area{
+
+
+    margin-top:30px;
+
+
+}
+
+
+
+.course-card{
+
+
+    background:
+
+    var(--card);
+
+
+
+    backdrop-filter:
+
+    blur(18px);
+
+
+
+    border-radius:28px;
+
+
+    padding:22px;
+
+
+    margin-bottom:18px;
+
+
+
+    box-shadow:
+
+
+    0 12px 35px
+
+    rgba(0,0,0,.08);
+
+
+
+    animation:
+
+    cardShow .45s ease both;
+
+
+
+    transition:.3s;
+
+
+}
+
+
+
+
+.course-card:hover{
+
+
+    transform:
+
+    translateY(-5px);
+
+
+}
+
+
+
+
+@keyframes cardShow{
+
+
+from{
+
+
+opacity:0;
+
+
+transform:
+
+translateX(40px);
+
+
+}
+
+
+
+to{
+
+
+opacity:1;
+
+
+transform:
+
+translateX(0);
+
+
+}
+
+
+}
+
+
+
+
+
+.course-time{
+
+
+    font-size:13px;
+
+
+    color:#86868b;
+
+
+}
+
+
+
+
+.course-name{
+
+
+    margin-top:12px;
+
+
+    font-size:23px;
+
+
+    font-weight:700;
+
+
+}
+
+
+
+.course-room{
+
+
+    margin-top:10px;
+
+
+    color:#666;
+
+
+}
+
+
+
+.empty{
+
+
+    opacity:.55;
+
+
+}
+
+
+
+
+
+
+/* 底部提示 */
+
+
+.footer{
+
+
+    margin-top:35px;
+
+
+    text-align:center;
+
+
+    color:#999;
+
+
+    font-size:13px;
+
+
+}
+
+
+
+
+</style>
+
+
+</head>
+
+
+
+
+
+<body>
+
+
+
+<div class="container">
+
+
+
+<div class="header">
+
+
+<div class="class-name">
+
+26级计算机应用 5班
+
+</div>
+
+
+
+<h1>
+
+My Schedule
+
+</h1>
+
+
+
+<p>
+
+我的大学课程管理助手
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="info-card">
+
+
+<div class="info-title">
+
+下一节课程
+
+</div>
+
+
+<div class="next-course" id="nextCourse">
+
+加载中...
+
+</div>
+
+
+
+<div class="next-detail" id="nextDetail">
+
+--
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="week-box">
+
+
+
+<button class="day-btn"
+onclick="changeDay(0)">
+周一
+</button>
+
+
+<button class="day-btn"
+onclick="changeDay(1)">
+周二
+</button>
+
+
+
+<button class="day-btn"
+onclick="changeDay(2)">
+周三
+</button>
+
+
+
+<button class="day-btn"
+onclick="changeDay(3)">
+周四
+</button>
+
+
+
+<button class="day-btn"
+onclick="changeDay(4)">
+周五
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="course-area"
+id="courseArea">
+
+
+</div>
+
+
+
+
+
+
+
+<div class="footer">
+
+My Schedule · PWA Edition
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+const schedule = [
+
+
+[
+
+{
+time:"08:40 - 10:15",
+name:"无",
+room:""
+},
+
+{
+time:"10:35 - 12:10",
+name:"无",
+room:""
+},
+
+{
+time:"14:00 - 15:40",
+name:"道德与法治",
+room:"2-217"
+},
+
+{
+time:"15:50 - 17:30",
+name:"高职英语",
+room:"1-1007"
+}
+
+
+],
+
+
+
+
+
+[
+
+
+{
+time:"08:40 - 10:15",
+name:"无",
+room:""
+},
+
+
+{
+time:"10:35 - 12:10",
+name:"无",
+room:""
+},
+
+
+{
+time:"14:00 - 15:40",
+name:"Java程序设计",
+room:"科技楼301"
+},
+
+
+{
+time:"15:50 - 17:30",
+name:"Java程序设计",
+room:"科技楼301"
+}
+
+
+],
+
+
+
+
+
+
+[
+
+
+{
+time:"08:40 - 10:15",
+name:"智慧林业前端交互技术",
+room:"科技楼405"
+},
+
+
+{
+time:"10:35 - 12:10",
+name:"智慧林业前端交互技术",
+room:"科技楼405"
+},
+
+
+{
+time:"14:00 - 15:40",
+name:"无",
+room:""
+},
+
+
+{
+time:"15:50 - 17:30",
+name:"大学生职业规划",
+room:"2-305"
+}
+
+
+],
+
+
+
+
+
+
+[
+
+
+{
+time:"08:40 - 10:15",
+name:"HTML5+CSS3网页设计与制作",
+room:"云网一"
+},
+
+
+{
+time:"10:35 - 12:10",
+name:"HTML5+CSS3网页设计与制作",
+room:"云网一"
+},
+
+
+{
+time:"14:00 - 15:40",
+name:"劳动课",
+room:""
+},
+
+
+{
+time:"15:50 - 17:30",
+name:"无",
+room:""
+}
+
+
+],
+
+
+
+
+
+
+[
+
+
+{
+time:"08:40 - 10:15",
+name:"体育课",
+room:"后山操场"
+},
+
+
+{
+time:"10:35 - 12:10",
+name:"无",
+room:""
+},
+
+
+{
+time:"14:00 - 15:40",
+name:"无",
+room:""
+},
+
+
+{
+time:"15:50 - 17:30",
+name:"无",
+room:""
+}
+
+
+]
+
+
+];
+
+
+
+
+
+function renderCourses(day){
+
+
+const area=document.getElementById("courseArea");
+
+
+
+area.innerHTML="";
+
+
+
+
+schedule[day].forEach((course,index)=>{
+
+
+setTimeout(()=>{
+
+
+const card=document.createElement("div");
+
+
+card.className="course-card";
+
+
+
+if(course.name==="无"){
+
+card.classList.add("empty");
+
+}
+
+
+
+card.innerHTML=`
+
+<div class="course-time">
+
+${course.time}
+
+</div>
+
+
+<div class="course-name">
+
+${course.name}
+
+</div>
+
+
+
+<div class="course-room">
+
+${course.room ? "📍 "+course.room : ""}
+
+</div>
+
+
+`;
+
+
+
+area.appendChild(card);
+
+
+
+},index*100);
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function changeDay(day){
+
+
+
+document
+.querySelectorAll(".day-btn")
+.forEach((btn,index)=>{
+
+
+if(index===day){
+
+btn.classList.add("active");
+
+}
+
+else{
+
+btn.classList.remove("active");
+
+}
+
+
+});
+
+
+
+
+
+
+const area=document.getElementById("courseArea");
+
+
+
+area.style.opacity="0";
+
+
+area.style.transform=
+"translateX(-30px)";
+
+
+
+setTimeout(()=>{
+
+
+renderCourses(day);
+
+
+
+area.style.opacity="1";
+
+
+area.style.transform=
+"translateX(0)";
+
+
+},250);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function loadToday(){
+
+
+
+let today=new Date().getDay();
+
+
+
+if(today===0 || today===6){
+
+today=1;
+
+}
+
+else{
+
+today=today;
+
+}
+
+
+
+changeDay(today-1);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function showNextCourse(){
+
+
+
+let today=new Date().getDay();
+
+
+
+if(today===0 || today===6){
+
+
+document.getElementById("nextCourse")
+.innerHTML=
+"今天没有课程";
+
+
+document.getElementById("nextDetail")
+.innerHTML=
+"享受休息时间 ☕";
+
+
+return;
+
+
+}
+
+
+
+let list=schedule[today-1];
+
+
+
+let course=
+list.find(
+item=>item.name!=="无"
+);
+
+
+
+if(course){
+
+
+document
+.getElementById("nextCourse")
+.innerHTML=
+course.name;
+
+
+document
+.getElementById("nextDetail")
+.innerHTML=
+"⏰ "+course.time+
+"　📍 "+course.room;
+
+
+
+}
+
+else{
+
+
+document
+.getElementById("nextCourse")
+.innerHTML=
+"暂无课程";
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// PWA注册
+
+
+if(
+"serviceWorker" in navigator
+){
+
+
+navigator.serviceWorker.register(
+"./sw.js"
+)
+.then(()=>{
+
+
+console.log(
+"PWA Service Worker Ready"
+);
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+loadToday();
+
+
+showNextCourse();
+
+
+
+</script>
+
+
+
+</body>
+
+
+</html>
