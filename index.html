@@ -1,1345 +1,634 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
-<title>My Schedule</title>
-
-<link rel="manifest" href="manifest.json">
-
-<meta name="theme-color" content="#f5f5f7">
-
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-
-:root{
-
-    --main:#0071e3;
-    --text:#1d1d1f;
-    --gray:#86868b;
-    --card:rgba(255,255,255,.72);
-
-}
-
-
-
-body{
-
-    min-height:100vh;
-
-    padding-bottom:
-    env(safe-area-inset-bottom);
-
-    font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Display",
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
-
-
-    color:var(--text);
-
-
-    background:
-
-    linear-gradient(
-        135deg,
-        #f5f5f7,
-        #ffffff
-    );
-
-
-    overflow-x:hidden;
-
-}
-
-
-
-/* 动态光晕背景 */
-
-body::before{
-
-
-    content:"";
-
-
-    position:fixed;
-
-
-    width:420px;
-
-    height:420px;
-
-
-    top:-180px;
-
-    left:-120px;
-
-
-
-    background:
-
-    radial-gradient(
-        circle,
-        rgba(0,113,227,.18),
-        transparent 70%
-    );
-
-
-
-    animation:
-
-    moveOne 12s infinite alternate;
-
-
-
-    z-index:-1;
-
-
-}
-
-
-
-body::after{
-
-
-    content:"";
-
-
-    position:fixed;
-
-
-    width:380px;
-
-    height:380px;
-
-
-
-    right:-150px;
-
-    bottom:-120px;
-
-
-
-    background:
-
-    radial-gradient(
-        circle,
-        rgba(175,82,222,.15),
-        transparent 70%
-    );
-
-
-
-    animation:
-
-    moveTwo 15s infinite alternate;
-
-
-
-    z-index:-1;
-
-}
-
-
-
-@keyframes moveOne{
-
-
-from{
-
-transform:translate(0,0);
-
-}
-
-
-to{
-
-transform:translate(80px,120px);
-
-}
-
-
-}
-
-
-
-@keyframes moveTwo{
-
-
-from{
-
-transform:translate(0,0);
-
-}
-
-
-to{
-
-transform:translate(-100px,-80px);
-
-}
-
-
-}
-
-
-
-
-
-
-
-.container{
-
-
-    width:100%;
-
-
-    max-width:600px;
-
-
-    margin:auto;
-
-
-    padding:
-
-    35px 20px 60px;
-
-
-
-}
-
-
-
-
-
-
-
-/* 顶部 */
-
-
-.header{
-
-
-    animation:
-
-    fade .8s ease;
-
-
-}
-
-
-
-.class-name{
-
-
-    font-size:15px;
-
-    color:var(--gray);
-
-
-}
-
-
-
-.header h1{
-
-
-    margin-top:8px;
-
-
-    font-size:42px;
-
-
-    letter-spacing:-2px;
-
-
-}
-
-
-
-.header p{
-
-
-    margin-top:10px;
-
-
-    color:var(--gray);
-
-
-}
-
-
-
-
-
-@keyframes fade{
-
-
-from{
-
-opacity:0;
-
-transform:translateY(25px);
-
-}
-
-
-to{
-
-opacity:1;
-
-}
-
-
-}
-
-
-
-
-
-
-/* 信息卡 */
-
-
-.info-card{
-
-
-    margin-top:28px;
-
-
-    padding:25px;
-
-
-
-    background:
-
-    var(--card);
-
-
-
-    backdrop-filter:
-
-    blur(20px);
-
-
-
-    border-radius:30px;
-
-
-
-    box-shadow:
-
-    0 15px 40px
-    rgba(0,0,0,.08);
-
-
-
-}
-
-
-
-
-.info-title{
-
-
-    color:var(--gray);
-
-
-    font-size:14px;
-
-
-}
-
-
-
-.next-course{
-
-
-    margin-top:12px;
-
-
-    font-size:24px;
-
-
-    font-weight:700;
-
-
-}
-
-
-
-.next-detail{
-
-
-    margin-top:8px;
-
-
-    color:#666;
-
-
-}
-
-
-
-
-
-
-/* 星期按钮 */
-
-
-.week-box{
-
-
-    display:flex;
-
-
-    gap:10px;
-
-
-    overflow-x:auto;
-
-
-    margin-top:25px;
-
-
-}
-
-
-
-.week-box::-webkit-scrollbar{
-
-display:none;
-
-}
-
-
-
-.day-btn{
-
-
-    flex-shrink:0;
-
-
-    width:70px;
-
-
-    height:45px;
-
-
-    border:none;
-
-
-    border-radius:20px;
-
-
-    background:
-
-    rgba(255,255,255,.8);
-
-
-
-    color:#555;
-
-
-
-    font-size:15px;
-
-
-    transition:.35s;
-
-
-
-}
-
-
-
-.day-btn.active{
-
-
-    background:
-
-    var(--main);
-
-
-    color:white;
-
-
-    transform:
-
-    translateY(-4px);
-
-
-}
-.course-area{
-
-
-    margin-top:30px;
-
-
-}
-
-
-
-.course-card{
-
-
-    background:
-
-    var(--card);
-
-
-
-    backdrop-filter:
-
-    blur(18px);
-
-
-
-    border-radius:28px;
-
-
-    padding:22px;
-
-
-    margin-bottom:18px;
-
-
-
-    box-shadow:
-
-
-    0 12px 35px
-
-    rgba(0,0,0,.08);
-
-
-
-    animation:
-
-    cardShow .45s ease both;
-
-
-
-    transition:.3s;
-
-
-}
-
-
-
-
-.course-card:hover{
-
-
-    transform:
-
-    translateY(-5px);
-
-
-}
-
-
-
-
-@keyframes cardShow{
-
-
-from{
-
-
-opacity:0;
-
-
-transform:
-
-translateX(40px);
-
-
-}
-
-
-
-to{
-
-
-opacity:1;
-
-
-transform:
-
-translateX(0);
-
-
-}
-
-
-}
-
-
-
-
-
-.course-time{
-
-
-    font-size:13px;
-
-
-    color:#86868b;
-
-
-}
-
-
-
-
-.course-name{
-
-
-    margin-top:12px;
-
-
-    font-size:23px;
-
-
-    font-weight:700;
-
-
-}
-
-
-
-.course-room{
-
-
-    margin-top:10px;
-
-
-    color:#666;
-
-
-}
-
-
-
-.empty{
-
-
-    opacity:.55;
-
-
-}
-
-
-
-
-
-
-/* 底部提示 */
-
-
-.footer{
-
-
-    margin-top:35px;
-
-
-    text-align:center;
-
-
-    color:#999;
-
-
-    font-size:13px;
-
-
-}
-
-
-
-
-</style>
-
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f6fa">
+  <meta name="description" content="26级计算机应用5班课程表">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="课程表">
+  <title>My Schedule · 我的课程表</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" href="./icon.png">
+  <link rel="shortcut icon" type="image/png" href="./icon.png">
+  <link rel="apple-touch-icon" href="./icon.png">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #20242e;
+      --muted: #818897;
+      --line: rgba(34, 43, 65, .075);
+      --blue: #5278f6;
+      --blue-dark: #3d62e5;
+      --surface: rgba(255,255,255,.82);
+      --shadow: 0 16px 42px rgba(35, 47, 82, .075);
+    }
+
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: #f5f6fa; }
+    body {
+      position: relative;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--ink);
+      background: linear-gradient(145deg, #f7f8fc 0%, #f3f6fb 47%, #fbf8ff 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before, body::after {
+      position: fixed;
+      z-index: -1;
+      content: "";
+      pointer-events: none;
+      border-radius: 50%;
+      filter: blur(3px);
+    }
+    body::before {
+      width: 390px; height: 390px; left: -180px; top: -130px;
+      background: radial-gradient(circle, rgba(105,145,255,.20), transparent 70%);
+      animation: drift-a 18s ease-in-out infinite alternate;
+    }
+    body::after {
+      width: 360px; height: 360px; right: -180px; bottom: -130px;
+      background: radial-gradient(circle, rgba(192,146,255,.17), transparent 70%);
+      animation: drift-b 22s ease-in-out infinite alternate;
+    }
+    @keyframes drift-a { to { transform: translate(85px, 105px); } }
+    @keyframes drift-b { to { transform: translate(-80px, -90px); } }
+
+    .app-shell { width: min(100% - 32px, 620px); margin: 0 auto; padding: 29px 0 calc(34px + env(safe-area-inset-bottom)); }
+    .topline { display: flex; align-items: center; gap: 9px; color: #858b9a; font-size: 10px; font-weight: 800; letter-spacing: .16em; }
+    .brand-mark { display: grid; width: 25px; height: 25px; place-items: center; border-radius: 9px; color: white; background: linear-gradient(145deg,#7396ff,#4d6eea); box-shadow: 0 5px 12px rgba(82,120,246,.25); font-size: 13px; letter-spacing: 0; }
+    .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 14px; margin-top: 25px; }
+    .class-label { margin: 0 0 7px; color: #818897; font-size: 13px; letter-spacing: .035em; }
+    h1 { margin: 0; font-size: clamp(33px, 8.5vw, 44px); line-height: 1.05; letter-spacing: -.06em; font-weight: 760; }
+    .title-dot { color: var(--blue); }
+    .hero-subtitle { margin: 10px 0 0; color: #858b99; font-size: 13px; line-height: 1.55; }
+    .week-badge { flex: 0 0 auto; padding: 10px 12px; border: 1px solid rgba(255,255,255,.95); border-radius: 15px; background: rgba(255,255,255,.56); color: #7e8799; text-align: center; box-shadow: 0 6px 22px rgba(36,49,85,.04); }
+    .week-badge strong { display: block; color: #4f6fe2; font-size: 15px; letter-spacing: .09em; }
+    .week-badge span { display: block; margin-top: 3px; font-size: 9px; letter-spacing: .12em; }
+
+    .clock-card {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      margin-top: 25px; padding: 16px 18px; border: 1px solid rgba(255,255,255,.9); border-radius: 22px;
+      background: rgba(255,255,255,.61); box-shadow: 0 8px 26px rgba(35,47,82,.035); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    }
+    .clock-date { min-width: 0; }
+    .clock-day { color: #3e475a; font-weight: 700; font-size: 14px; }
+    .clock-full-date { margin-top: 5px; color: var(--muted); font-size: 12px; }
+    .clock-right { flex: 0 0 auto; text-align: right; }
+    .clock-caption { display: block; margin-bottom: 3px; color: #a0a6b2; font-size: 9px; font-weight: 800; letter-spacing: .15em; }
+    .clock-time { font-size: clamp(22px, 6vw, 28px); line-height: 1.1; font-weight: 720; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+
+    /* 主视觉：午夜蓝紫极光。多层渐变与独立光斑以不同节奏移动，动感细腻但不抢文字。 */
+    .focus-card {
+      --aurora-a: rgba(90, 166, 255, .62);
+      --aurora-b: rgba(183, 130, 255, .56);
+      --aurora-c: rgba(58, 220, 211, .29);
+      --focus-base-a: #152451;
+      --focus-base-b: #33428e;
+      --focus-base-c: #58449e;
+      position: relative; isolation: isolate; overflow: hidden;
+      margin-top: 16px; padding: 22px 22px 20px; border-radius: 27px; color: white;
+      background-color: #1e2f6d;
+      background-image:
+        radial-gradient(ellipse at 14% 18%, var(--aurora-a) 0%, transparent 35%),
+        radial-gradient(ellipse at 88% 20%, var(--aurora-b) 0%, transparent 34%),
+        radial-gradient(ellipse at 53% 108%, var(--aurora-c) 0%, transparent 43%),
+        linear-gradient(128deg, var(--focus-base-a) 0%, var(--focus-base-b) 49%, var(--focus-base-c) 100%);
+      background-size: 160% 180%, 170% 170%, 190% 180%, 220% 220%;
+      background-position: 0% 18%, 100% 8%, 48% 100%, 0% 42%;
+      box-shadow: 0 20px 44px rgba(48, 65, 145, .25), inset 0 1px 0 rgba(255,255,255,.13);
+      transition: box-shadow .5s ease, transform .35s ease;
+      animation: focus-gradient 18s ease-in-out infinite alternate;
+      will-change: background-position;
+    }
+    .focus-card::before {
+      position: absolute; z-index: 0; content: ""; width: 238px; height: 238px;
+      right: -106px; top: -139px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2);
+      box-shadow: 0 0 0 18px rgba(255,255,255,.035), 0 0 0 42px rgba(255,255,255,.025), 0 0 0 67px rgba(255,255,255,.018);
+      animation: orbit-drift 15s ease-in-out infinite alternate; pointer-events: none;
+    }
+    .focus-card::after {
+      position: absolute; z-index: 0; content: ""; pointer-events: none;
+      width: 250px; height: 250px; right: -115px; bottom: -175px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.23) 0%, rgba(255,255,255,.07) 37%, transparent 71%);
+      filter: blur(2px); animation: focus-aurora 9s ease-in-out infinite alternate;
+    }
+    .focus-card > * { position: relative; z-index: 1; }
+    .focus-card > .focus-ambience { position: absolute; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; }
+    .focus-ambience .aurora-orb { position: absolute; display: block; border-radius: 50%; filter: blur(23px); will-change: transform; }
+    .focus-ambience .orb-one {
+      width: 175px; height: 175px; top: -86px; right: 7%; opacity: .65;
+      background: radial-gradient(circle, rgba(134,190,255,.9) 0%, rgba(88,139,255,.28) 43%, transparent 72%);
+      animation: orb-float-one 13s ease-in-out infinite alternate;
+    }
+    .focus-ambience .orb-two {
+      width: 192px; height: 192px; left: 20%; bottom: -132px; opacity: .65;
+      background: radial-gradient(circle, rgba(95,229,218,.78) 0%, rgba(82,196,218,.22) 44%, transparent 72%);
+      animation: orb-float-two 16s ease-in-out infinite alternate;
+    }
+    .focus-ambience .orb-three {
+      width: 155px; height: 155px; left: -91px; top: 21%; opacity: .56;
+      background: radial-gradient(circle, rgba(196,147,255,.86) 0%, rgba(167,123,255,.19) 48%, transparent 73%);
+      animation: orb-float-three 12s ease-in-out infinite alternate;
+    }
+    .focus-ambience::after {
+      position: absolute; content: ""; top: -45%; left: -80%; width: 62%; height: 190%;
+      transform: rotate(18deg); opacity: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.025) 28%, rgba(255,255,255,.13) 50%, rgba(255,255,255,.035) 67%, transparent 100%);
+      animation: light-sweep 11s ease-in-out infinite;
+    }
+    .focus-card.is-changing { animation: focus-gradient 18s ease-in-out infinite alternate, focus-change .62s cubic-bezier(.2,.8,.2,1) both; }
+    .focus-card.is-rest {
+      --aurora-a: rgba(126, 225, 215, .55); --aurora-b: rgba(139, 194, 217, .48); --aurora-c: rgba(186, 241, 211, .28);
+      --focus-base-a: #173e52; --focus-base-b: #2d7386; --focus-base-c: #477f8b;
+      box-shadow: 0 20px 42px rgba(48, 126, 140, .2), inset 0 1px 0 rgba(255,255,255,.14);
+    }
+    .focus-card.is-done {
+      --aurora-a: rgba(151, 184, 255, .54); --aurora-b: rgba(210, 158, 232, .42); --aurora-c: rgba(255, 203, 166, .23);
+      --focus-base-a: #293a63; --focus-base-b: #56648b; --focus-base-c: #716789;
+      box-shadow: 0 20px 42px rgba(87, 101, 139, .2), inset 0 1px 0 rgba(255,255,255,.14);
+    }
+    .focus-card .focus-chip::before { background: #fff; box-shadow: 0 0 0 0 rgba(255,255,255,.42); animation: focus-dot-pulse 2.4s ease-out infinite; }
+    .focus-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .focus-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border: 1px solid rgba(255,255,255,.23); border-radius: 999px; background: rgba(255,255,255,.13); color: rgba(255,255,255,.96); font-size: 9px; font-weight: 800; letter-spacing: .13em; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .focus-chip::before { content: ""; display: block; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+    .focus-eyebrow { margin: 20px 0 8px; color: rgba(255,255,255,.8); font-size: 12px; }
+    .focus-title { position: relative; margin: 0; max-width: 100%; font-size: clamp(23px, 6vw, 29px); line-height: 1.3; font-weight: 750; letter-spacing: -.04em; overflow-wrap: anywhere; text-shadow: 0 1px 18px rgba(13,22,65,.12); }
+    .focus-detail { margin: 9px 0 0; color: rgba(255,255,255,.87); font-size: 12px; line-height: 1.65; }
+    .focus-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 14px; margin-top: 20px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.94); font-size: 11px; }
+    .focus-bottom span { min-width: 0; overflow-wrap: anywhere; }
+    .focus-bottom .focus-strong { font-weight: 750; }
+    @keyframes focus-gradient {
+      from { background-position: 0% 18%, 100% 8%, 48% 100%, 0% 42%; }
+      to { background-position: 100% 80%, 0% 65%, 100% 0%, 100% 58%; }
+    }
+    @keyframes focus-aurora { from { transform: translate3d(-8px, 6px, 0) scale(.92); opacity: .54; } to { transform: translate3d(-39px, -26px, 0) scale(1.13); opacity: .96; } }
+    @keyframes orbit-drift { from { transform: translate3d(0, 0, 0) rotate(-8deg) scale(.98); } to { transform: translate3d(-17px, 15px, 0) rotate(9deg) scale(1.04); } }
+    @keyframes orb-float-one { from { transform: translate3d(0, 0, 0) scale(.92); } to { transform: translate3d(-36px, 31px, 0) scale(1.12); } }
+    @keyframes orb-float-two { from { transform: translate3d(-9px, 4px, 0) scale(1); } to { transform: translate3d(35px, -28px, 0) scale(.88); } }
+    @keyframes orb-float-three { from { transform: translate3d(0, 0, 0) scale(.9); } to { transform: translate3d(33px, 24px, 0) scale(1.14); } }
+    @keyframes light-sweep { 0%, 42% { left: -80%; opacity: 0; } 48% { opacity: .65; } 64% { left: 125%; opacity: 0; } 100% { left: 125%; opacity: 0; } }
+    @keyframes focus-dot-pulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.34); } 70% { box-shadow: 0 0 0 6px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
+    @keyframes focus-change { 0% { opacity: .82; transform: translateY(7px) scale(.992); } 65% { opacity: 1; transform: translateY(-1px) scale(1.003); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+
+    .section-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin: 29px 2px 12px; }
+    .section-eyebrow { margin: 0 0 5px; color: #8d94a3; font-size: 9px; font-weight: 850; letter-spacing: .17em; }
+    .section-title { margin: 0; font-size: 19px; line-height: 1.2; letter-spacing: -.035em; }
+    .section-note { color: #969cab; font-size: 10px; text-align: right; }
+    .week-strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+    .week-day {
+      min-width: 0; padding: 11px 1px 10px; border: 1px solid rgba(255,255,255,.84); border-radius: 16px; background: rgba(255,255,255,.54); color: #7d8594;
+      text-align: center; cursor: pointer; transition: transform .23s ease, background .23s ease, color .23s ease, box-shadow .23s ease; -webkit-tap-highlight-color: transparent;
+    }
+    .week-day:active { transform: scale(.94); }
+    .week-day .day-name { display: block; font-size: 10px; font-weight: 700; }
+    .week-day .day-date {
+      display: grid; place-items: center; width: 30px; height: 30px; margin: 4px auto 0;
+      border: 1.5px solid transparent; border-radius: 50%; color: #4f586a; font-size: 16px; font-weight: 750;
+      font-variant-numeric: tabular-nums; transition: background .25s ease, border-color .25s ease, box-shadow .25s ease, color .25s ease;
+    }
+    .week-day .day-mark { display: block; width: 4px; height: 4px; margin: 4px auto 0; border-radius: 50%; background: transparent; }
+    .week-day.has-classes .day-mark { background: #a7b6fa; }
+    .week-day.weekend .day-name { color: #9a9faf; }
+    .week-day.active { transform: translateY(-2px); border-color: transparent; color: white; background: linear-gradient(145deg,#567bf4,#7185f2); box-shadow: 0 9px 18px rgba(82,120,246,.22); }
+    .week-day.active .day-date, .week-day.active .day-name { color: white; }
+    .week-day.active .day-mark { background: #fff; }
+    .week-day.today:not(.active) { border-color: rgba(82,120,246,.28); }
+    .week-day.today:not(.active) .day-date {
+      border-color: rgba(82,120,246,.78);
+      background: linear-gradient(145deg, rgba(225,233,255,.95), rgba(247,249,255,.92));
+      box-shadow: 0 0 0 3px rgba(82,120,246,.10), inset 0 1px 0 rgba(255,255,255,.95), 0 3px 8px rgba(82,120,246,.08);
+      color: #4568e4;
+    }
+    .week-day.active.today .day-date {
+      border-color: rgba(255,255,255,.96); background: rgba(255,255,255,.16);
+      box-shadow: 0 0 0 3px rgba(255,255,255,.19), inset 0 1px 0 rgba(255,255,255,.24);
+      color: #fff;
+    }
+
+    .schedule-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 26px 2px 13px; }
+    .schedule-heading h2 { margin: 0; font-size: 19px; letter-spacing: -.035em; }
+    .schedule-count { padding: 6px 9px; border-radius: 999px; background: rgba(82,120,246,.09); color: #5a74df; font-size: 10px; font-weight: 750; white-space: nowrap; }
+    .schedule-panel { transition: opacity .2s ease; }
+    .schedule-panel.anim-right { animation: enter-right .42s cubic-bezier(.2,.7,.2,1) both; }
+    .schedule-panel.anim-left { animation: enter-left .42s cubic-bezier(.2,.7,.2,1) both; }
+    @keyframes enter-right { from { opacity: 0; transform: translateX(22px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes enter-left { from { opacity: 0; transform: translateX(-22px); } to { opacity: 1; transform: translateX(0); } }
+
+    .course-card { position: relative; display: grid; grid-template-columns: 76px minmax(0,1fr); gap: 15px; margin-bottom: 11px; padding: 16px; border: 1px solid rgba(255,255,255,.88); border-radius: 22px; background: var(--surface); box-shadow: 0 9px 26px rgba(35,47,82,.045); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); animation: card-appear .42s ease both; animation-delay: calc(var(--i, 0) * 55ms); }
+    @keyframes card-appear { from { opacity: 0; transform: translateY(10px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .course-timebox { display: flex; flex-direction: column; align-items: flex-start; padding: 3px 0 0 1px; }
+    .course-period { color: #8a92a1; font-size: 10px; font-weight: 700; }
+    .course-start { margin-top: 9px; color: #4c5870; font-size: 15px; line-height: 1.1; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .course-end { margin-top: 5px; color: #9da4b1; font-size: 10px; font-variant-numeric: tabular-nums; }
+    .course-body { min-width: 0; padding-left: 14px; border-left: 3px solid var(--course-color, #dbe2ff); }
+    .course-type { display: inline-block; padding: 4px 7px; border-radius: 7px; background: var(--course-tint, #f0f3ff); color: var(--course-color-text, #6479d5); font-size: 9px; font-weight: 800; letter-spacing: .03em; }
+    .course-name { margin: 8px 0 0; color: #2b3140; font-size: 16px; line-height: 1.42; font-weight: 750; overflow-wrap: anywhere; }
+    .course-room { margin-top: 8px; color: #747e90; font-size: 13px; line-height: 1.5; font-weight: 550; overflow-wrap: anywhere; }
+    .course-card.is-free { background: rgba(255,255,255,.43); box-shadow: none; border-style: dashed; border-color: rgba(150,160,181,.24); }
+    .course-card.is-free .course-body { border-left-color: #d6dbe5; }
+    .course-card.is-free .course-type { color: #9098a8; background: #f1f3f7; }
+    .course-card.is-free .course-name { color: #858d9c; font-weight: 650; }
+    .course-card.is-free .course-room { color: #a0a6b1; }
+
+    .weekend-state { position: relative; overflow: hidden; padding: 24px 22px 22px; border: 1px solid rgba(255,255,255,.9); border-radius: 26px; background: linear-gradient(145deg,rgba(255,255,255,.86),rgba(246,249,255,.76)); box-shadow: var(--shadow); animation: card-appear .45s ease both; }
+    .rest-art { position: relative; display: grid; place-items: center; height: 155px; margin: -3px 0 16px; overflow: hidden; border-radius: 19px; background: linear-gradient(135deg,#edf2ff,#f4edff 56%,#e9f7f4); }
+    .rest-orbit { position: absolute; width: 132px; height: 132px; border: 1px solid rgba(122,143,217,.2); border-radius: 50%; }
+    .rest-orbit::before, .rest-orbit::after { position: absolute; content: ""; border: 1px solid rgba(122,143,217,.14); border-radius: 50%; }
+    .rest-orbit::before { inset: 12px; }
+    .rest-orbit::after { inset: 27px; }
+    .rest-sun { position: relative; z-index: 1; width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(145deg,#ffdca2,#ffbd9d); box-shadow: 0 10px 32px rgba(255,190,152,.35); }
+    .rest-cloud { position: absolute; z-index: 2; width: 82px; height: 24px; left: calc(50% - 41px); bottom: 36px; border-radius: 30px; background: rgba(255,255,255,.94); box-shadow: 0 7px 18px rgba(123,144,185,.12); }
+    .rest-cloud::before, .rest-cloud::after { position: absolute; content: ""; bottom: 7px; border-radius: 50%; background: inherit; }
+    .rest-cloud::before { left: 14px; width: 30px; height: 30px; }
+    .rest-cloud::after { right: 11px; width: 23px; height: 23px; }
+    .rest-star { position: absolute; color: rgba(107,126,190,.7); font-size: 15px; }
+    .rest-star.star-a { top: 24px; left: 24%; }
+    .rest-star.star-b { top: 41px; right: 22%; font-size: 11px; }
+    .rest-star.star-c { bottom: 27px; left: 27%; font-size: 10px; }
+    .rest-overline { color: #8c96aa; font-size: 9px; font-weight: 850; letter-spacing: .17em; }
+    .weekend-title { margin: 9px 0 0; font-size: 23px; font-weight: 760; letter-spacing: -.045em; }
+    .weekend-copy { margin: 9px 0 0; color: #858d9c; font-size: 12px; line-height: 1.8; }
+    .rest-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 17px; }
+    .rest-tag { padding: 7px 10px; border-radius: 999px; background: #f1f3fa; color: #777f92; font-size: 10px; }
+    .app-footer { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 27px; color: #a1a7b3; font-size: 10px; letter-spacing: .04em; }
+    .footer-dot { width: 4px; height: 4px; border-radius: 50%; background: #a9b8f7; }
+
+    @media (min-width: 540px) {
+      .app-shell { padding-top: 40px; }
+      .focus-card { padding: 25px 27px 22px; }
+      .week-strip { gap: 9px; }
+      .week-day { padding: 13px 3px 11px; }
+      .course-card { grid-template-columns: 92px minmax(0,1fr); padding: 19px; }
+    }
+    @media (max-width: 360px) {
+      .app-shell { width: calc(100% - 24px); padding-top: 23px; }
+      .hero-row { margin-top: 21px; }
+      .week-badge { padding: 8px 9px; }
+      .clock-card { padding: 14px; }
+      .clock-full-date { font-size: 11px; }
+      .week-strip { gap: 4px; }
+      .week-day { border-radius: 13px; }
+      .week-day .day-name { font-size: 9px; }
+      .week-day .day-date { font-size: 15px; }
+      .course-card { grid-template-columns: 68px minmax(0,1fr); gap: 11px; padding: 13px; }
+      .course-body { padding-left: 11px; }
+      .course-name { font-size: 15px; }
+      .course-room { font-size: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
 </head>
-
-
-
-
-
 <body>
-
-
-
-<div class="container">
-
-
-
-<div class="header">
-
-
-<div class="class-name">
-
-26级计算机应用 5班
-
-</div>
-
-
-
-<h1>
-
-My Schedule
-
-</h1>
-
-
-
-<p>
-
-我的大学课程管理助手
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="info-card">
-
-
-<div class="info-title">
-
-下一节课程
-
-</div>
-
-
-<div class="next-course" id="nextCourse">
-
-加载中...
-
-</div>
-
-
-
-<div class="next-detail" id="nextDetail">
-
---
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="week-box">
-
-
-
-<button class="day-btn"
-onclick="changeDay(0)">
-周一
-</button>
-
-
-<button class="day-btn"
-onclick="changeDay(1)">
-周二
-</button>
-
-
-
-<button class="day-btn"
-onclick="changeDay(2)">
-周三
-</button>
-
-
-
-<button class="day-btn"
-onclick="changeDay(3)">
-周四
-</button>
-
-
-
-<button class="day-btn"
-onclick="changeDay(4)">
-周五
-</button>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-<div class="course-area"
-id="courseArea">
-
-
-</div>
-
-
-
-
-
-
-
-<div class="footer">
-
-My Schedule · PWA Edition
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-<script>
-
-
-const schedule = [
-
-
-[
-
-{
-time:"08:40 - 10:15",
-name:"无",
-room:""
-},
-
-{
-time:"10:35 - 12:10",
-name:"无",
-room:""
-},
-
-{
-time:"14:00 - 15:40",
-name:"道德与法治",
-room:"2-217"
-},
-
-{
-time:"15:50 - 17:30",
-name:"高职英语",
-room:"1-1007"
-}
-
-
-],
-
-
-
-
-
-[
-
-
-{
-time:"08:40 - 10:15",
-name:"无",
-room:""
-},
-
-
-{
-time:"10:35 - 12:10",
-name:"无",
-room:""
-},
-
-
-{
-time:"14:00 - 15:40",
-name:"Java程序设计",
-room:"科技楼301"
-},
-
-
-{
-time:"15:50 - 17:30",
-name:"Java程序设计",
-room:"科技楼301"
-}
-
-
-],
-
-
-
-
-
-
-[
-
-
-{
-time:"08:40 - 10:15",
-name:"智慧林业前端交互技术",
-room:"科技楼405"
-},
-
-
-{
-time:"10:35 - 12:10",
-name:"智慧林业前端交互技术",
-room:"科技楼405"
-},
-
-
-{
-time:"14:00 - 15:40",
-name:"无",
-room:""
-},
-
-
-{
-time:"15:50 - 17:30",
-name:"大学生职业规划",
-room:"2-305"
-}
-
-
-],
-
-
-
-
-
-
-[
-
-
-{
-time:"08:40 - 10:15",
-name:"HTML5+CSS3网页设计与制作",
-room:"云网一"
-},
-
-
-{
-time:"10:35 - 12:10",
-name:"HTML5+CSS3网页设计与制作",
-room:"云网一"
-},
-
-
-{
-time:"14:00 - 15:40",
-name:"劳动课",
-room:""
-},
-
-
-{
-time:"15:50 - 17:30",
-name:"无",
-room:""
-}
-
-
-],
-
-
-
-
-
-
-[
-
-
-{
-time:"08:40 - 10:15",
-name:"体育课",
-room:"后山操场"
-},
-
-
-{
-time:"10:35 - 12:10",
-name:"无",
-room:""
-},
-
-
-{
-time:"14:00 - 15:40",
-name:"无",
-room:""
-},
-
-
-{
-time:"15:50 - 17:30",
-name:"无",
-room:""
-}
-
-
-]
-
-
-];
-
-
-
-
-
-function renderCourses(day){
-
-
-const area=document.getElementById("courseArea");
-
-
-
-area.innerHTML="";
-
-
-
-
-schedule[day].forEach((course,index)=>{
-
-
-setTimeout(()=>{
-
-
-const card=document.createElement("div");
-
-
-card.className="course-card";
-
-
-
-if(course.name==="无"){
-
-card.classList.add("empty");
-
-}
-
-
-
-card.innerHTML=`
-
-<div class="course-time">
-
-${course.time}
-
-</div>
-
-
-<div class="course-name">
-
-${course.name}
-
-</div>
-
-
-
-<div class="course-room">
-
-${course.room ? "📍 "+course.room : ""}
-
-</div>
-
-
-`;
-
-
-
-area.appendChild(card);
-
-
-
-},index*100);
-
-
-
-});
-
-
-
-}
-
-
-
-
-
-
-
-
-
-function changeDay(day){
-
-
-
-document
-.querySelectorAll(".day-btn")
-.forEach((btn,index)=>{
-
-
-if(index===day){
-
-btn.classList.add("active");
-
-}
-
-else{
-
-btn.classList.remove("active");
-
-}
-
-
-});
-
-
-
-
-
-
-const area=document.getElementById("courseArea");
-
-
-
-area.style.opacity="0";
-
-
-area.style.transform=
-"translateX(-30px)";
-
-
-
-setTimeout(()=>{
-
-
-renderCourses(day);
-
-
-
-area.style.opacity="1";
-
-
-area.style.transform=
-"translateX(0)";
-
-
-},250);
-
-
-
-}
-
-
-
-
-
-
-
-
-
-function loadToday(){
-
-
-
-let today=new Date().getDay();
-
-
-
-if(today===0 || today===6){
-
-today=1;
-
-}
-
-else{
-
-today=today;
-
-}
-
-
-
-changeDay(today-1);
-
-
-
-}
-
-
-
-
-
-
-
-
-
-function showNextCourse(){
-
-
-
-let today=new Date().getDay();
-
-
-
-if(today===0 || today===6){
-
-
-document.getElementById("nextCourse")
-.innerHTML=
-"今天没有课程";
-
-
-document.getElementById("nextDetail")
-.innerHTML=
-"享受休息时间 ☕";
-
-
-return;
-
-
-}
-
-
-
-let list=schedule[today-1];
-
-
-
-let course=
-list.find(
-item=>item.name!=="无"
-);
-
-
-
-if(course){
-
-
-document
-.getElementById("nextCourse")
-.innerHTML=
-course.name;
-
-
-document
-.getElementById("nextDetail")
-.innerHTML=
-"⏰ "+course.time+
-"　📍 "+course.room;
-
-
-
-}
-
-else{
-
-
-document
-.getElementById("nextCourse")
-.innerHTML=
-"暂无课程";
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// PWA注册
-
-
-if(
-"serviceWorker" in navigator
-){
-
-
-navigator.serviceWorker.register(
-"./sw.js"
-)
-.then(()=>{
-
-
-console.log(
-"PWA Service Worker Ready"
-);
-
-
-});
-
-
-}
-
-
-
-
-
-
-
-
-loadToday();
-
-
-showNextCourse();
-
-
-
-</script>
-
-
-
+  <main class="app-shell">
+    <header>
+      <div class="topline"><span class="brand-mark" aria-hidden="true">S</span><span>MY CAMPUS&nbsp; / &nbsp;PERSONAL SCHEDULE</span></div>
+      <div class="hero-row">
+        <div>
+          <p class="class-label">26级计算机应用 · 5班</p>
+          <h1>My Schedule<span class="title-dot">.</span></h1>
+          <p class="hero-subtitle">把时间安排好，也给生活留点余白。</p>
+        </div>
+        <div class="week-badge" aria-label="每周课程"><strong>WEEK</strong><span>PLANNER</span></div>
+      </div>
+    </header>
+
+    <section class="clock-card" aria-label="当前日期和时间">
+      <div class="clock-date">
+        <div class="clock-day" id="currentWeekday">正在读取日期</div>
+        <div class="clock-full-date" id="currentDate">----</div>
+      </div>
+      <div class="clock-right">
+        <span class="clock-caption">LOCAL TIME</span>
+        <time class="clock-time" id="currentTime">--:--:--</time>
+      </div>
+    </section>
+
+    <section class="focus-card" id="focusCard" aria-live="polite">
+      <div class="focus-ambience" aria-hidden="true">
+        <span class="aurora-orb orb-one"></span>
+        <span class="aurora-orb orb-two"></span>
+        <span class="aurora-orb orb-three"></span>
+      </div>
+      <div class="focus-top">
+        <span class="focus-chip" id="focusChip">UP NEXT</span>
+      </div>
+      <p class="focus-eyebrow" id="focusEyebrow">下一节课程</p>
+      <h2 class="focus-title" id="focusTitle">正在读取课程</h2>
+      <p class="focus-detail" id="focusDetail">请稍候</p>
+      <div class="focus-bottom">
+        <span id="focusMetaLeft">课程安排</span>
+        <span class="focus-strong" id="focusMetaRight"></span>
+      </div>
+    </section>
+
+    <section aria-labelledby="weekHeading">
+      <div class="section-heading">
+        <div>
+          <p class="section-eyebrow">YOUR WEEK</p>
+          <h2 class="section-title" id="weekHeading">一周安排</h2>
+        </div>
+        <span class="section-note">点选日期<br>查看课程</span>
+      </div>
+      <nav class="week-strip" id="weekStrip" aria-label="选择星期"></nav>
+    </section>
+
+    <section aria-labelledby="scheduleTitle">
+      <div class="schedule-heading">
+        <h2 id="scheduleTitle">今日课程</h2>
+        <span class="schedule-count" id="scheduleCount">课程安排</span>
+      </div>
+      <div class="schedule-panel" id="schedulePanel"></div>
+    </section>
+
+    <footer class="app-footer"><span class="footer-dot"></span><span>MY SCHEDULE</span><span>·</span><span>MAKE SPACE FOR YOURSELF</span></footer>
+  </main>
+
+  <script>
+    // 课程时间按学校课表设置；周六、周日没有课程。
+    const schedule = [
+      [
+        { period: "第 1–2 节", start: "08:40", end: "10:15", name: "无", room: "" },
+        { period: "第 3–4 节", start: "10:35", end: "12:10", name: "无", room: "" },
+        { period: "第 5–6 节", start: "14:00", end: "15:40", name: "道德与法治", room: "2-217" },
+        { period: "第 7–8 节", start: "15:50", end: "17:30", name: "高职英语", room: "1-1007" }
+      ],
+      [
+        { period: "第 1–2 节", start: "08:40", end: "10:15", name: "无", room: "" },
+        { period: "第 3–4 节", start: "10:35", end: "12:10", name: "无", room: "" },
+        { period: "第 5–6 节", start: "14:00", end: "15:40", name: "Java程序设计", room: "科技楼301" },
+        { period: "第 7–8 节", start: "15:50", end: "17:30", name: "Java程序设计", room: "科技楼301" }
+      ],
+      [
+        { period: "第 1–2 节", start: "08:40", end: "10:15", name: "智慧林业前端交互技术", room: "科技楼405" },
+        { period: "第 3–4 节", start: "10:35", end: "12:10", name: "智慧林业前端交互技术", room: "科技楼405" },
+        { period: "第 5–6 节", start: "14:00", end: "15:40", name: "无", room: "" },
+        { period: "第 7–8 节", start: "15:50", end: "17:30", name: "大学生职业规划", room: "2-305" }
+      ],
+      [
+        { period: "第 1–2 节", start: "08:40", end: "10:15", name: "HTML5+CSS3网页设计与制作", room: "云网一" },
+        { period: "第 3–4 节", start: "10:35", end: "12:10", name: "HTML5+CSS3网页设计与制作", room: "云网一" },
+        { period: "第 5–6 节", start: "14:00", end: "15:40", name: "劳动课", room: "" },
+        { period: "第 7–8 节", start: "15:50", end: "17:30", name: "无", room: "" }
+      ],
+      [
+        { period: "第 1–2 节", start: "08:40", end: "10:15", name: "体育课", room: "后山操场" },
+        { period: "第 3–4 节", start: "10:35", end: "12:10", name: "无", room: "" },
+        { period: "第 5–6 节", start: "14:00", end: "15:40", name: "无", room: "" },
+        { period: "第 7–8 节", start: "15:50", end: "17:30", name: "无", room: "" }
+      ],
+      [],
+      []
+    ];
+
+    const dayNames = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+    const courseColors = {
+      "道德与法治": ["#c5a16c", "#fbf5ec", "#a47a43"],
+      "高职英语": ["#63a98d", "#edf8f2", "#43896d"],
+      "Java程序设计": ["#6387ef", "#eef2ff", "#5775d6"],
+      "智慧林业前端交互技术": ["#9b83e8", "#f4f0ff", "#8268d5"],
+      "大学生职业规划": ["#d49a68", "#fff4e9", "#ae794c"],
+      "HTML5+CSS3网页设计与制作": ["#6e9ed4", "#edf5ff", "#557fb5"],
+      "劳动课": ["#8c9b72", "#f1f5eb", "#718257"],
+      "体育课": ["#df8c8c", "#fff0f0", "#bd7070"]
+    };
+
+    const $ = (id) => document.getElementById(id);
+    let selectedDay = getTodayIndex(new Date());
+    let lastCalendarKey = "";
+    let lastFocusTransitionKey = "";
+
+    function getTodayIndex(date) {
+      // 转换为周一=0 ... 周日=6
+      return (date.getDay() + 6) % 7;
+    }
+    function toMinutes(hhmm) {
+      const [h, m] = hhmm.split(":").map(Number);
+      return h * 60 + m;
+    }
+    function formatDate(date) {
+      return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+    }
+    function pad2(value) { return String(value).padStart(2, "0"); }
+    function formatRemaining(totalMinutes) {
+      const seconds = Math.max(0, Math.floor(totalMinutes * 60));
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      if (hours > 0) return `还有 ${hours} 小时 ${minutes} 分钟`;
+      if (minutes > 0) return `还有 ${minutes} 分钟`;
+      return "即将开始";
+    }
+    function realCourses(day) {
+      return schedule[day].filter(course => course.name !== "无");
+    }
+    function getMonday(date) {
+      const monday = new Date(date);
+      monday.setHours(0, 0, 0, 0);
+      monday.setDate(monday.getDate() - getTodayIndex(date));
+      return monday;
+    }
+
+    function renderWeekStrip(now = new Date()) {
+      const strip = $("weekStrip");
+      const monday = getMonday(now);
+      const todayIndex = getTodayIndex(now);
+      strip.innerHTML = "";
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(monday);
+        date.setDate(monday.getDate() + i);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "week-day";
+        if (i === selectedDay) button.classList.add("active");
+        if (i === todayIndex) button.classList.add("today");
+        if (i >= 5) button.classList.add("weekend");
+        if (realCourses(i).length > 0) button.classList.add("has-classes");
+        button.setAttribute("aria-pressed", String(i === selectedDay));
+        button.setAttribute("aria-label", `${dayNames[i]}，${formatDate(date)}${i >= 5 ? "，休息日" : ""}`);
+        button.innerHTML = `<span class="day-name">${dayNames[i]}</span><span class="day-date">${date.getDate()}</span><span class="day-mark"></span>`;
+        button.addEventListener("click", () => selectDay(i));
+        strip.appendChild(button);
+      }
+      lastCalendarKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+    }
+
+    function selectDay(day) {
+      if (day === selectedDay) {
+        updateFocusCard(new Date());
+        return;
+      }
+      const previousDay = selectedDay;
+      selectedDay = day;
+      [...$("weekStrip").children].forEach((button, index) => {
+        button.classList.toggle("active", index === selectedDay);
+        button.setAttribute("aria-pressed", String(index === selectedDay));
+      });
+      renderSchedule(day, day > previousDay ? "right" : "left");
+      updateFocusCard(new Date());
+    }
+
+    function renderSchedule(day, direction = "right") {
+      const panel = $("schedulePanel");
+      const heading = $("scheduleTitle");
+      const count = $("scheduleCount");
+      heading.textContent = `${dayNames[day]}课程`;
+      if (day >= 5) {
+        count.textContent = "休息日 · 0 节课";
+        panel.className = `schedule-panel anim-${direction}`;
+        panel.innerHTML = `
+          <div class="weekend-state">
+            <div class="rest-art" aria-hidden="true">
+              <div class="rest-orbit"></div><div class="rest-sun"></div><div class="rest-cloud"></div>
+              <span class="rest-star star-a">✦</span><span class="rest-star star-b">✧</span><span class="rest-star star-c">✦</span>
+            </div>
+            <div class="rest-overline">NO CLASS · RECHARGE</div>
+            <h3 class="weekend-title">${day === 5 ? "周六，慢下来也很好。" : "周日，给自己一点余白。"}</h3>
+            <p class="weekend-copy">今天没有课程安排。睡个好觉、听听喜欢的音乐，或者为自己做一顿饭。休息不是计划之外的事，也是生活的一部分。</p>
+            <div class="rest-tags"><span class="rest-tag">☁ 自由安排</span><span class="rest-tag">✦ 做喜欢的事</span><span class="rest-tag">↗ 为新一周充电</span></div>
+          </div>`;
+        return;
+      }
+
+      const daySchedule = schedule[day];
+      const occupied = realCourses(day).length;
+      count.textContent = `${occupied} 个有课时段`;
+      panel.className = `schedule-panel anim-${direction}`;
+      panel.innerHTML = daySchedule.map((course, index) => {
+        const free = course.name === "无";
+        const colors = courseColors[course.name] || ["#cbd3e2", "#f1f3f7", "#7f899a"];
+        const style = `--i:${index};--course-color:${colors[0]};--course-tint:${colors[1]};--course-color-text:${colors[2]};`;
+        return `
+          <article class="course-card ${free ? "is-free" : ""}" style="${style}">
+            <div class="course-timebox">
+              <span class="course-period">${course.period}</span>
+              <span class="course-start">${course.start}</span>
+              <span class="course-end">至 ${course.end}</span>
+            </div>
+            <div class="course-body">
+              <span class="course-type">${free ? "FREE TIME" : "CLASS"}</span>
+              <h3 class="course-name">${free ? "自由安排" : course.name}</h3>
+              <p class="course-room">${free ? "暂无课程 · 这段时间由你安排" : (course.room ? `⌖ ${course.room}` : "按课堂安排进行")}</p>
+            </div>
+          </article>`;
+      }).join("");
+    }
+
+    function setFocus({ mode, chip, eyebrow, title, detail, left, right }) {
+      const card = $("focusCard");
+      const transitionKey = [selectedDay, mode || "default", chip, eyebrow, title].join("|");
+      if (transitionKey !== lastFocusTransitionKey) {
+        card.classList.remove("is-changing");
+        // 读取布局以重启动画；只在课程状态/所选日期发生变化时触发，不会每秒闪动。
+        void card.offsetWidth;
+        card.classList.add("is-changing");
+        lastFocusTransitionKey = transitionKey;
+      }
+      card.classList.toggle("is-rest", mode === "rest");
+      card.classList.toggle("is-done", mode === "done");
+      $("focusChip").textContent = chip;
+      $("focusEyebrow").textContent = eyebrow;
+      $("focusTitle").textContent = title;
+      $("focusDetail").textContent = detail;
+      $("focusMetaLeft").textContent = left || "";
+      $("focusMetaRight").textContent = right || "";
+    }
+
+    function updateFocusCard(now) {
+      const todayIndex = getTodayIndex(now);
+      // 查看其他日期时显示该日预览；只有选中今天时才按实时钟点判断课程状态。
+      if (selectedDay >= 5) {
+        setFocus({
+          mode: "rest", chip: "REST DAY", eyebrow: `${dayNames[selectedDay]} · 周末模式`,
+          title: "今天没有课程。", detail: "把时间留给自己，好好休息，再继续出发。",
+          left: "没有课程安排", right: "Enjoy your day"
+        });
+        return;
+      }
+      if (selectedDay !== todayIndex) {
+        const first = realCourses(selectedDay)[0];
+        const total = realCourses(selectedDay).length;
+        if (!first) {
+          setFocus({ mode: "rest", chip: "NO CLASS", eyebrow: `${dayNames[selectedDay]} · 暂无课程`, title: "这一天没有课程。", detail: "这段时间可以自由安排，给自己留一点余白。", left: "暂无课程安排", right: "Free time" });
+        } else {
+          setFocus({
+            mode: "", chip: "DAY PREVIEW", eyebrow: `${dayNames[selectedDay]} · 课程预览`,
+            title: first.name, detail: `第一节有课时段 ${first.start} 开始 · 当天共 ${total} 个有课时段`,
+            left: first.room ? `⌖ ${first.room}` : "按当天安排", right: "课程预览"
+          });
+        }
+        return;
+      }
+
+      const nowMinutes = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
+      const todaysClasses = realCourses(todayIndex);
+      const current = todaysClasses.find(course => nowMinutes >= toMinutes(course.start) && nowMinutes < toMinutes(course.end));
+      if (current) {
+        const remaining = toMinutes(current.end) - nowMinutes;
+        setFocus({
+          mode: "", chip: "IN CLASS", eyebrow: "正在上课",
+          title: current.name, detail: `本节课程预计 ${current.end} 结束。`,
+          left: current.room ? `⌖ ${current.room}` : "课程进行中", right: `剩余 ${Math.max(1, Math.ceil(remaining))} 分钟`
+        });
+        return;
+      }
+
+      const next = todaysClasses.find(course => toMinutes(course.start) > nowMinutes);
+      if (next) {
+        const delay = toMinutes(next.start) - nowMinutes;
+        setFocus({
+          mode: "", chip: "UP NEXT", eyebrow: "下一节课程",
+          title: next.name, detail: `${next.start} 开始 · ${formatRemaining(delay)}`,
+          left: next.room ? `⌖ ${next.room}` : "教室以实际安排为准", right: `结束 ${next.end}`
+        });
+        return;
+      }
+
+      setFocus({
+        mode: "done", chip: "ALL DONE", eyebrow: "今日课程已结束",
+        title: "剩下的时间，交给自己。", detail: "今天的课程已经全部结束啦。喝杯水、听听音乐，去做点喜欢的事吧。",
+        left: "TODAY COMPLETE", right: "好好享受余下时间"
+      });
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const todayIndex = getTodayIndex(now);
+      $("currentWeekday").textContent = `${dayNames[todayIndex]} · ${todayIndex >= 5 ? "周末休息" : "上课日"}`;
+      $("currentDate").textContent = formatDate(now);
+      $("currentTime").textContent = `${pad2(now.getHours())}:${pad2(now.getMinutes())}:${pad2(now.getSeconds())}`;
+      $("currentTime").dateTime = now.toISOString();
+      const calendarKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+      if (calendarKey !== lastCalendarKey) renderWeekStrip(now);
+      // 如果跨到新的一天，自动切回当天的日期；否则保留用户选择的预览日期。
+      if (typeof updateClock.previousToday === "number" && updateClock.previousToday !== todayIndex) {
+        selectedDay = todayIndex;
+        renderWeekStrip(now);
+        renderSchedule(selectedDay, "right");
+      }
+      updateClock.previousToday = todayIndex;
+      updateFocusCard(now);
+    }
+
+    // 初始渲染：工作日显示四个时段；周末显示独立的休息日视觉状态。
+    renderWeekStrip(new Date());
+    renderSchedule(selectedDay, "right");
+    updateClock();
+    window.setInterval(updateClock, 1000);
+
+    // 注册 PWA Service Worker。部署在 GitHub Pages HTTPS 地址下时生效。
+    if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(error => {
+          console.warn("Service Worker 注册失败：", error);
+        });
+      });
+    }
+  </script>
 </body>
-
-
 </html>
