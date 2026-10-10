@@ -1,25 +1,20 @@
 {
   "name": "My Schedule",
   "short_name": "课程表",
-  "description": "我的大学课程管理助手",
-
+  "description": "26级计算机应用5班课程表",
   "start_url": "./index.html",
-
+  "scope": "./",
   "display": "standalone",
-
   "orientation": "portrait",
-
-  "background_color": "#f5f5f7",
-
-  "theme_color": "#0071e3",
-
+  "background_color": "#f5f6fa",
+  "theme_color": "#f5f6fa",
   "lang": "zh-CN",
-
   "icons": [
     {
       "src": "./icon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
